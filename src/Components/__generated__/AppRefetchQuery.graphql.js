@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash f53b09a682111209bf42289c77616641
+ * @relayHash 69925e04c650413f766c553b0b04db46
  */
 
 /* eslint-disable */
@@ -11,25 +11,29 @@
 import type { ConcreteRequest } from 'relay-runtime';
 type App_query$ref = any;
 export type AppRefetchQueryVariables = {|
-  x?: ?number,
-  y?: ?number,
+  id?: ?string
 |};
 export type AppRefetchQueryResponse = {|
-  +$fragmentRefs: App_query$ref
+  +widget: ?{|
+    +$fragmentRefs: App_query$ref
+  |}
 |};
 */
 
 
 /*
-query AppRefetchQuery {
-  ...App_query_1tlLEo
-}
-
-fragment App_query_1tlLEo on Query {
-  test {
-    a
+query AppRefetchQuery(
+  $id: String
+) {
+  widget(id: $id) {
+    ...App_query
     id
   }
+}
+
+fragment App_query on Widget {
+  id
+  title
 }
 */
 
@@ -37,15 +41,17 @@ const node/*: ConcreteRequest*/ = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "x",
-    "type": "Float",
+    "name": "id",
+    "type": "String",
     "defaultValue": null
-  },
+  }
+],
+v1 = [
   {
-    "kind": "LocalArgument",
-    "name": "y",
-    "type": "Float",
-    "defaultValue": null
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "id",
+    "type": "String"
   }
 ];
 return {
@@ -53,7 +59,7 @@ return {
   "operationKind": "query",
   "name": "AppRefetchQuery",
   "id": null,
-  "text": "query AppRefetchQuery {\n  ...App_query_1tlLEo\n}\n\nfragment App_query_1tlLEo on Query {\n  test {\n    a\n    id\n  }\n}\n",
+  "text": "query AppRefetchQuery(\n  $id: String\n) {\n  widget(id: $id) {\n    ...App_query\n    id\n  }\n}\n\nfragment App_query on Widget {\n  id\n  title\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -63,20 +69,18 @@ return {
     "argumentDefinitions": v0,
     "selections": [
       {
-        "kind": "FragmentSpread",
-        "name": "App_query",
-        "args": [
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "widget",
+        "storageKey": null,
+        "args": v1,
+        "concreteType": "Widget",
+        "plural": false,
+        "selections": [
           {
-            "kind": "Variable",
-            "name": "x",
-            "variableName": "x",
-            "type": null
-          },
-          {
-            "kind": "Variable",
-            "name": "y",
-            "variableName": "y",
-            "type": null
+            "kind": "FragmentSpread",
+            "name": "App_query",
+            "args": null
           }
         ]
       }
@@ -90,23 +94,23 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "test",
+        "name": "widget",
         "storageKey": null,
-        "args": null,
-        "concreteType": "RootType",
+        "args": v1,
+        "concreteType": "Widget",
         "plural": false,
         "selections": [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "a",
+            "name": "id",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "title",
             "args": null,
             "storageKey": null
           }
@@ -117,5 +121,5 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '241ac14909c0a4a971cdd236476c4bff';
+(node/*: any*/).hash = 'cea77e8bceb3bc5c38272c608b8aa6b6';
 module.exports = node;

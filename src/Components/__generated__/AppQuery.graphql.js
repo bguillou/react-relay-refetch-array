@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 6cf0973fbf1e1c578ed0687d7e71d395
+ * @relayHash 3868af673cb8bc9a8a3574535c409fed
  */
 
 /* eslint-disable */
@@ -11,25 +11,34 @@
 import type { ConcreteRequest } from 'relay-runtime';
 type App_query$ref = any;
 export type AppQueryVariables = {|
-  x?: ?number,
-  y?: ?number,
+  filter?: ?string
 |};
 export type AppQueryResponse = {|
-  +$fragmentRefs: App_query$ref
+  +dashboard: ?{|
+    +widgets: ?$ReadOnlyArray<?{|
+      +$fragmentRefs: App_query$ref
+    |}>
+  |}
 |};
 */
 
 
 /*
-query AppQuery {
-  ...App_query_1tlLEo
-}
-
-fragment App_query_1tlLEo on Query {
-  test {
-    a
+query AppQuery(
+  $filter: String
+) {
+  dashboard(filter: $filter) {
+    widgets {
+      ...App_query
+      id
+    }
     id
   }
+}
+
+fragment App_query on Widget {
+  id
+  title
 }
 */
 
@@ -37,23 +46,32 @@ const node/*: ConcreteRequest*/ = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "x",
-    "type": "Float",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "y",
-    "type": "Float",
+    "name": "filter",
+    "type": "String",
     "defaultValue": null
   }
-];
+],
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "filter",
+    "variableName": "filter",
+    "type": "String"
+  }
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "AppQuery",
   "id": null,
-  "text": "query AppQuery {\n  ...App_query_1tlLEo\n}\n\nfragment App_query_1tlLEo on Query {\n  test {\n    a\n    id\n  }\n}\n",
+  "text": "query AppQuery(\n  $filter: String\n) {\n  dashboard(filter: $filter) {\n    widgets {\n      ...App_query\n      id\n    }\n    id\n  }\n}\n\nfragment App_query on Widget {\n  id\n  title\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -63,20 +81,29 @@ return {
     "argumentDefinitions": v0,
     "selections": [
       {
-        "kind": "FragmentSpread",
-        "name": "App_query",
-        "args": [
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "dashboard",
+        "storageKey": null,
+        "args": v1,
+        "concreteType": "RootType",
+        "plural": false,
+        "selections": [
           {
-            "kind": "Variable",
-            "name": "x",
-            "variableName": "x",
-            "type": null
-          },
-          {
-            "kind": "Variable",
-            "name": "y",
-            "variableName": "y",
-            "type": null
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "widgets",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Widget",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "FragmentSpread",
+                "name": "App_query",
+                "args": null
+              }
+            ]
           }
         ]
       }
@@ -90,26 +117,32 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "test",
+        "name": "dashboard",
         "storageKey": null,
-        "args": null,
+        "args": v1,
         "concreteType": "RootType",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
+            "kind": "LinkedField",
             "alias": null,
-            "name": "a",
+            "name": "widgets",
+            "storageKey": null,
             "args": null,
-            "storageKey": null
+            "concreteType": "Widget",
+            "plural": true,
+            "selections": [
+              v2,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "title",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
-          }
+          v2
         ]
       }
     ]
@@ -117,5 +150,5 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '03a64f69ba391ad0ed4804a07628cede';
+(node/*: any*/).hash = '52223ccb774a617096c46419e52527e2';
 module.exports = node;

@@ -10,55 +10,39 @@
 import type { ConcreteFragment } from 'relay-runtime';
 import type { FragmentReference } from "relay-runtime";
 declare export opaque type App_query$ref: FragmentReference;
-export type App_query = {|
-  +test: ?{|
-    +a: ?string
-  |},
+export type App_query = $ReadOnlyArray<{|
+  +id: string,
+  +title: string,
   +$refType: App_query$ref,
-|};
+|}>;
 */
 
 
 const node/*: ConcreteFragment*/ = {
   "kind": "Fragment",
   "name": "App_query",
-  "type": "Query",
-  "metadata": null,
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "x",
-      "type": "Float",
-      "defaultValue": 0
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "y",
-      "type": "Float",
-      "defaultValue": 0
-    }
-  ],
+  "type": "Widget",
+  "metadata": {
+    "plural": true
+  },
+  "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "LinkedField",
+      "kind": "ScalarField",
       "alias": null,
-      "name": "test",
-      "storageKey": null,
+      "name": "id",
       "args": null,
-      "concreteType": "RootType",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "a",
-          "args": null,
-          "storageKey": null
-        }
-      ]
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "title",
+      "args": null,
+      "storageKey": null
     }
   ]
 };
 // prettier-ignore
-(node/*: any*/).hash = '4cd9c991d72efe885d40abf30d926435';
+(node/*: any*/).hash = '0e517ca9acd4bb5c4c26cbe6e0a833f2';
 module.exports = node;

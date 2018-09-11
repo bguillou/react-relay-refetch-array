@@ -1,7 +1,7 @@
 import { Environment, Network, RecordSource, Store } from 'relay-runtime'
 
 const q = (operation, variables, cacheConfig, uploadables) =>
-  fetch('https://gql.cool/abc208', {
+  fetch('http://localhost:9999', {
     method: 'POST',
     headers: {
       Accept: 'application/json',

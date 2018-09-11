@@ -1,8 +1,14 @@
 type Query {
-  test(x: Float, y: Float): RootType
+  dashboard(filter: String): RootType
+  widget(id: String): Widget
 }
 
 type RootType {
   id: ID!
-  a: String
+  widgets: [Widget]
+}
+
+type Widget {
+  id: ID!
+  title: String!
 }

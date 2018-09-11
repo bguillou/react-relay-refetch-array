@@ -4,36 +4,25 @@ import environment from '../helpers/createRelayEnvironment'
 
 const Display = props => (
   <Fragment>
-    <pre>{props.query.test.a}</pre>
-    <button
-      onClick={() => {
-        props.relay.refetch({
-          x: Math.random(),
-          y: Math.random(),
-        })
-      }}
-    >
-      refetch
-    </button>
+    {console.log(props)}
+    <a onClick={() => props.relay.refetch({ id: '2' })}>Test</a>
+    {props.query.map(v => <div key={v.id}>{v.title}</div>)}
   </Fragment>
 )
 
 const FragmentDisplay = createRefetchContainer(
   Display,
   graphql`
-    fragment App_query on Query
-      @argumentDefinitions(
-        x: { type: "Float", defaultValue: 0 }
-        y: { type: "Float", defaultValue: 0 }
-      ) {
-      test {
-        a
-      }
+    fragment App_query on Widget @relay(plural: true) {
+      id
+      title
     }
   `,
   graphql`
-    query AppRefetchQuery($x: Float, $y: Float) {
-      ...App_query @arguments(x: $x, y: $y)
+    query AppRefetchQuery($id: String) {
+      widget(id: $id) {
+        ...App_query
+      }
     }
   `,
 )
@@ -41,21 +30,29 @@ const FragmentDisplay = createRefetchContainer(
 class App extends Component {
   render() {
     return (
-      <QueryRenderer
-        environment={environment}
-        query={graphql`
-          query AppQuery($x: Float, $y: Float) {
-            ...App_query @arguments(x: $x, y: $y)
+      <Fragment>
+        <input type="text" />
+        <QueryRenderer
+          environment={environment}
+          query={graphql`
+            query AppQuery($filter: String) {
+              dashboard(filter: $filter) {
+                widgets {
+                  ...App_query
+                }
+              }
+            }
+          `}
+          render={({ props }) =>
+            props
+              ? console.log(props) || (
+                  <FragmentDisplay query={props.dashboard.widgets} />
+                )
+              : '...'
           }
-        `}
-        render={({ props }) =>
-          props ? <FragmentDisplay query={props} /> : '...'
-        }
-        variables={{
-          x: 1,
-          y: 2,
-        }}
-      />
+          variables={{ filter: '' }}
+        />
+      </Fragment>
     )
   }
 }

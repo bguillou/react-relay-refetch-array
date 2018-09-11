@@ -10,12 +10,15 @@
   },
   "devDependencies": {
     "babel-plugin-relay": "^1.6.0",
+    "graphql-now": "^0.0.2",
+    "nodemon": "^1.18.4",
     "react-app-rewired": "^1.0.5",
     "react-scripts": "1.0.7",
     "relay-compiler": "^1.6.0"
   },
   "scripts": {
     "start": "react-app-rewired start",
+    "mocks": "yarn nodemon --exec 'yarn graphql-now' mock.js",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "relay": "relay-compiler --src ./src --schema schema.graphql --watch",
